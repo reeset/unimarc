@@ -9,60 +9,80 @@
 					<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 						xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ standards/marcxml/schema/MARC21slim.xsd"
 						xmlns="http://www.loc.gov/MARC21/slim">
-						<xsl:variable name="leader" select="leader"/>
-						<leader>
-							<!-- A calculer, mais comment ? -->
-							<xsl:variable name="len">00000</xsl:variable>
-							<xsl:variable name="stat">
-								<xsl:choose>
-									<xsl:when test="substring(leader, 6, 1) = 'a'">p</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="substring(leader, 6, 1)"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:variable name="type">
-								<xsl:choose>
-									<xsl:when test="substring(leader, 7, 1) = 'o'">m</xsl:when>
-									<xsl:when test="substring(leader, 7, 1) = 'r'">n</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="substring(leader, 7, 1)"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:variable name="biblvl">
-								<xsl:choose>
-									<xsl:when test="substring(leader, 8, 1) = 'b'">m</xsl:when>
-									<xsl:when test="substring(leader, 8, 1) = 'd'">m</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="substring(leader, 8, 1)"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<!-- A calculer, mais comment ? -->
-							<xsl:variable name="baod">02200</xsl:variable>
-							<xsl:variable name="enclvl">
-								<xsl:choose>
-									<xsl:when test="substring(leader, 18, 1) = '8'">2</xsl:when>
-									<xsl:when test="substring(leader, 17, 1) = '5'">3</xsl:when>
-									<xsl:when test="substring(leader, 18, 1) = '7'">3</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="substring(leader, 18, 1)"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:variable name="dcf">
-								<xsl:choose>
-									<xsl:when test="substring(leader, 19, 1) = ' '">n</xsl:when>
-									<xsl:otherwise>
-										<xsl:value-of select="' '"/>
-									</xsl:otherwise>
-								</xsl:choose>
-							</xsl:variable>
-							<xsl:value-of
-								select="concat($len, $stat, $type, $biblvl, '  22', $baod, $enclvl, $dcf, ' 45  ')"
-							/>
-						</leader>
+						<xsl:for-each select="marc:leader">
+							<leader>
+								<!-- To calculate, but how? -->
+								<xsl:variable name="recordLenght">00000</xsl:variable>
+								<xsl:variable name="recordStatus">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 6, 1) = 'a'">c</xsl:when>
+										<xsl:when test="substring(text(), 6, 1) = 'p'">c</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="substring(text(), 6, 1)"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="recordType">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 7, 1) = 'o'">m</xsl:when>
+										<xsl:when test="substring(text(), 7, 1) = 'p'">m</xsl:when>
+										<xsl:when test="substring(text(), 7, 1) = 't'">b</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="substring(text(), 7, 1)"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="bibLvl">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 8, 1) = 'b'">a</xsl:when>
+										<xsl:when test="substring(text(), 8, 1) = 'd'">a</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="substring(text(), 8, 1)"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="controlType">
+									<xsl:value-of select="substring(text(), 9, 1)"/>
+								</xsl:variable>
+								<xsl:variable name="coding">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 10, 1) = 'a'">50</xsl:when>
+										<!-- change MARC-8 encoding -->
+										<xsl:when test="substring(text(), 10, 1) = ' '">00</xsl:when>
+										<xsl:otherwise>50</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<!-- To calculate, but how? -->
+								<xsl:variable name="baod">02200</xsl:variable>
+								<xsl:variable name="encLvl">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 18, 1) = '8'">2</xsl:when>
+										<xsl:when test="substring(text(), 18, 1) = '5'">3</xsl:when>
+										<xsl:when test="substring(text(), 18, 1) = '7'">3</xsl:when>
+										<xsl:when test="substring(text(), 18, 1) = '2'">1</xsl:when>
+										<xsl:when test="substring(text(), 18, 1) = '3'">1</xsl:when>
+										<xsl:when test="substring(text(), 18, 1) = '4'">1</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="substring(text(), 18, 1)"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:variable name="dcf">
+									<xsl:choose>
+										<xsl:when test="substring(text(), 19, 1) = ' '">n</xsl:when>
+										<xsl:when test="substring(text(), 19, 1) = 'c'"> </xsl:when>
+										<xsl:when test="substring(text(), 19, 1) = 'u'">i</xsl:when>
+										<xsl:when test="substring(text(), 19, 1) = 'a'">n</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="' '"/>
+										</xsl:otherwise>
+									</xsl:choose>
+								</xsl:variable>
+								<xsl:value-of
+									select="concat($recordLenght, $recordStatus, $recordType, $bibLvl, ' ', $controlType, '22', $baod, $encLvl, $dcf, ' 450 ')"
+								/>
+							</leader>
+						</xsl:for-each>
 						<xsl:for-each select="marc:controlfield[@tag = '001']">
 							<controlfield tag="001">
 								<xsl:value-of select="text()"/>
@@ -72,6 +92,180 @@
 							<controlfield tag="005">
 								<xsl:value-of select="text()"/>
 							</controlfield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '020']">
+							<datafield tag="010">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="@ind1"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="@ind2"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
+										<!-- this code code removes all non-numeric characters -->
+										<xsl:value-of select="translate(text(),translate(text(),'0123456789-',''),'')"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'b']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'c']">
+									<subfield code="d">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'z']">
+									<subfield code="z">
+										<xsl:value-of select="translate(text(),translate(text(),'0123456789-',''),'')"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '022']">
+							<datafield tag="011">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="@ind1"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="@ind2"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="b"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
+								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="d"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
+								<xsl:for-each select="marc:subfield[@code = 'y']">
+									<subfield code="z">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<!--<xsl:for-each select="marc:subfield[@code='z']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
+							</datafield>
+						</xsl:for-each>
+						<!--<xsl:for-each select="marc:datafield[@tag='024']">
+					<datafield tag="012">
+						<xsl:attribute name="ind1"><xsl:value-of select="@ind1" /></xsl:attribute>
+						<xsl:attribute name="ind2"><xsl:value-of select="@ind2" /></xsl:attribute>
+						<xsl:for-each select="marc:subfield[@code='a']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
+						<xsl:for-each select="marc:subfield[@code='b']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
+						<xsl:for-each select="marc:subfield[@code='z']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
+					</datafield>
+				</xsl:for-each>-->
+						<xsl:for-each select="marc:datafield[@tag = '015']">
+							<datafield tag="020">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = '2']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+									<subfield code="z">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '017']">
+							<datafield tag="021">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'b']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '086']">
+							<datafield tag="022">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = '2']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'z']">
+									<subfield code="z">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '030']">
+							<datafield tag="040">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'z']">
+									<subfield code="z">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '028']">
+							<datafield tag="071">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="@ind1"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:choose>
+										<xsl:when test="@ind2 = 0">0</xsl:when>
+										<xsl:otherwise>1</xsl:otherwise>
+									</xsl:choose>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'b']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:controlfield[@tag = '008']">
 							<!-- FIXME: Dummy indicators -->
@@ -95,63 +289,59 @@
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
-									<xsl:variable name="topd" select="substring(text(), 7, 1)"/>
+									<xsl:variable name="typeofPubDate">
+										<xsl:choose>
+											<xsl:when test="substring(text(), 7, 1) = 'c'">a</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'd'">b</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'u'">c</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 's'">d</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'r'">e</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'q'">f</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'm'">g</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 't'">h</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'p'">i</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'e'">j</xsl:when>
+											<xsl:when test="substring(text(), 7, 1) = 'b'">u</xsl:when>
+											<xsl:otherwise>
+												<xsl:value-of select="' '"/>
+											</xsl:otherwise>
+										</xsl:choose>
+									</xsl:variable>
 									<xsl:variable name="d1" select="substring(text(), 8, 4)"/>
 									<xsl:variable name="d2" select="substring(text(), 12, 4)"/>
-									<xsl:variable name="il">
+									<xsl:variable name="targetAudience">
 										<xsl:choose>
-											<xsl:when test="substring(text(), 23, 1) = 'a'"
-												>b||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'b'"
-												>c||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'j'"
-												>a||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'c'"
-												>d||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'd'"
-												>e||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'e'"
-												>k||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = 'g'"
-												>m||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = '|'"
-												>|||</xsl:when>
-											<xsl:when test="substring(text(), 23, 1) = ' '"
-												>u||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'a'">b||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'b'">c||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'j'">a||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'c'">d||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'd'">e||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'e'">k||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = 'g'">m||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = '|'">|||</xsl:when>
+											<xsl:when test="substring(text(), 23, 1) = ' '">u||</xsl:when>
 											<xsl:otherwise>u||</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
-									<xsl:variable name="gpc">
+									<xsl:variable name="governmentPublication">
 										<xsl:choose>
-											<xsl:when test="substring(text(), 29, 1) = 'f'"
-												>a</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 's'"
-												>b</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'l'"
-												>d</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'c'"
-												>e</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'i'"
-												>f</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'z'"
-												>g</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'o'"
-												>h</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'u'"
-												>u</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = ' '"
-												>y</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = 'z'"
-												>z</xsl:when>
-											<xsl:when test="substring(text(), 29, 1) = '|'"
-												>|</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'f'">a</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 's'">b</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'l'">d</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'c'">e</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'i'">f</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'z'">g</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'o'">h</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'u'">u</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = ' '">y</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = 'z'">z</xsl:when>
+											<xsl:when test="substring(text(), 29, 1) = '|'">|</xsl:when>
 											<xsl:otherwise>y</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
 									<xsl:variable name="mrc">
 										<xsl:choose>
-											<xsl:when test="substring(text(), 39, 1) = ' '"
-												>0</xsl:when>
+											<xsl:when test="substring(text(), 39, 1) = ' '">0</xsl:when>
 											<xsl:otherwise>1</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
@@ -164,7 +354,8 @@
 												/>
 											</xsl:when>
 											<xsl:otherwise>
-												<xsl:value-of select="'   '"/>
+												<!-- Expected default for MARC21 -->
+												<xsl:value-of select="'eng'"/>
 											</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
@@ -184,7 +375,7 @@
 									</xsl:variable>
 									<xsl:variable name="aot" select="substring(text(), 34, 1)"/>
 									<xsl:value-of
-										select="concat($deof, $topd, $d1, $d2, $il, $gpc, $mrc, $loc, $tc, $cs, $acs, $aot)"
+										select="concat($deof, $typeofPubDate, $d1, $d2, $targetAudience, $governmentPublication, $mrc, $loc, $tc, $cs, $acs, $aot)"
 									/>
 								</subfield>
 							</datafield>
@@ -195,13 +386,13 @@
 								<xsl:attribute name="ind2">
 									<xsl:value-of select="' '"/>
 								</xsl:attribute>
-								<!-- Difficile de faire un bel algo pour les deux variables suivantes -->
 								<subfield code="a">
 									<xsl:variable name="ic">
-										<xsl:value-of select="'    '"/>
+										<xsl:value-of select="substring(text(), 19, 4)"/>
 									</xsl:variable>
 									<xsl:variable name="focc">
-										<xsl:value-of select="'    '"/>
+										<xsl:value-of select="translate (substring(text(), 25, 4), 'bciaderyspltnwfgv', 
+																								   'abcdefghijnprnzzz')"/>
 									</xsl:variable>
 									<xsl:variable name="cc">
 										<xsl:value-of select="substring(text(), 30, 1)"/>
@@ -391,179 +582,6 @@
 								</subfield>
 							</datafield>
 						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '020']">
-							<datafield tag="010">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="@ind1"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="@ind2"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'b']">
-									<subfield code="b">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'c']">
-									<subfield code="d">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'z']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '022']">
-							<datafield tag="011">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="@ind1"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="@ind2"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="b"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="d"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-								<xsl:for-each select="marc:subfield[@code = 'y']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<!--<xsl:for-each select="marc:subfield[@code='z']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-							</datafield>
-						</xsl:for-each>
-						<!--<xsl:for-each select="marc:datafield[@tag='024']">
-					<datafield tag="012">
-						<xsl:attribute name="ind1"><xsl:value-of select="@ind1" /></xsl:attribute>
-						<xsl:attribute name="ind2"><xsl:value-of select="@ind2" /></xsl:attribute>
-						<xsl:for-each select="marc:subfield[@code='a']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
-						<xsl:for-each select="marc:subfield[@code='b']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
-						<xsl:for-each select="marc:subfield[@code='z']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>
-					</datafield>
-				</xsl:for-each>-->
-						<xsl:for-each select="marc:datafield[@tag = '015']">
-							<datafield tag="020">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = '2']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="b">
-										<xsl:value-of select="text()"/>
-									</subfield>
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '017']">
-							<datafield tag="021">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="b">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'b']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '086']">
-							<datafield tag="22">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = '2']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="b">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'z']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '030']">
-							<datafield tag="040">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'z']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '028']">
-							<datafield tag="071">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="@ind1"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:choose>
-										<xsl:when test="@ind2 = 0">0</xsl:when>
-										<xsl:otherwise>1</xsl:otherwise>
-									</xsl:choose>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'b']">
-									<subfield code="b">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
-						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '041']">
 							<datafield tag="101">
 								<xsl:attribute name="ind1">
@@ -635,7 +653,9 @@
 								</xsl:attribute>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 									<xsl:if test="contains(text(), ' = ')">
 										<subfield code="d">
@@ -652,15 +672,16 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'c']">
 									<xsl:choose>
-										<xsl:when test="contains(text(), ' / ')">
+										<xsl:when test="contains(text(), ' ; ')">
 											<subfield code="f">
 												<xsl:value-of
-												select="substring-before(text(), ' / ')"/>
+												select="substring-before(text(), ' ; ')"/>
 											</subfield>
-											<subfield code="g">
-												<xsl:value-of
-												select="substring-after(text(), ' / ')"/>
-											</subfield>
+											<xsl:call-template name="tokenizeSubfield">
+												<xsl:with-param name="list" select="substring-after(text(), ' ; ')"/>
+												<xsl:with-param name="delimiter" select="' ; '"/>
+												<xsl:with-param name="code" select="'g'"/>
+											</xsl:call-template>
 										</xsl:when>
 										<xsl:otherwise>
 											<subfield code="f">
@@ -729,22 +750,30 @@
 								</xsl:attribute>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'b']">
 									<subfield code="c">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'c']">
 									<subfield code="d">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'e']">
 									<subfield code="e">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'f']">
@@ -776,35 +805,38 @@
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '300']">
 							<datafield tag="215">
-								<xsl:choose>
-									<xsl:when test="@ind = 1">
-										<xsl:attribute name="ind1">0</xsl:attribute>
-									</xsl:when>
-									<xsl:otherwise>
-										<xsl:attribute name="ind1">1</xsl:attribute>
-									</xsl:otherwise>
-								</xsl:choose>
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="' '"/>
+								</xsl:attribute>
 								<xsl:attribute name="ind2">
 									<xsl:value-of select="' '"/>
 								</xsl:attribute>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'b']">
 									<subfield code="c">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'c']">
 									<subfield code="d">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'e']">
 									<subfield code="e">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 							</datafield>
@@ -989,19 +1021,23 @@
 							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '500']">
-							<datafield tag="336">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
+							<xsl:choose>
+								<xsl:when test="contains(marc:subfield[@code = 'a'], 'file')">
+									<datafield tag="336">
+										<xsl:attribute name="ind1">
+											<xsl:value-of select="' '"/>
+										</xsl:attribute>
+										<xsl:attribute name="ind2">
+											<xsl:value-of select="' '"/>
+										</xsl:attribute>
+										<xsl:for-each select="marc:subfield[@code = 'a']">
+											<subfield code="a">
+												<xsl:value-of select="text()"/>
+											</subfield>
+										</xsl:for-each>
+									</datafield>
+								</xsl:when>
+							</xsl:choose>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '538']">
 							<datafield tag="337">
@@ -1610,6 +1646,89 @@
 								</xsl:for-each>
 							</datafield>
 						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '130']">
+							<datafield tag="500">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="@ind1"/>
+								</xsl:attribute>
+								<xsl:attribute name="ind2">
+									<xsl:value-of select="1"/>
+								</xsl:attribute>
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'd']">
+									<subfield code="n">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'f']">
+									<subfield code="k">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'g']">
+									<subfield code="n">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'k']">
+									<subfield code="j">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'l']">
+									<subfield code="m">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'm']">
+									<subfield code="r">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'n']">
+									<subfield code="h">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'o']">
+									<subfield code="w">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'p']">
+									<subfield code="i">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'r']">
+									<subfield code="u">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 's']">
+									<subfield code="q">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<!-- Tag 730 is not on UNIMARC to MARC 21 Conversion Specifications -->
 						<xsl:for-each select="marc:datafield[@tag = '730']">
 							<datafield tag="500">
 								<xsl:attribute name="ind1">
@@ -2005,89 +2124,6 @@
 								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="3"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
 							</datafield>
 						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '630']">
-							<datafield tag="605">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="@ind1"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="@ind2"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<!--<xsl:for-each select="marc:subfield[@code='d']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-								<xsl:for-each select="marc:subfield[@code = 'f']">
-									<subfield code="k">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'g']">
-									<subfield code="n">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'k']">
-									<subfield code="j">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'l']">
-									<subfield code="m">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'm']">
-									<subfield code="r">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'n']">
-									<subfield code="h">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'o']">
-									<subfield code="w">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'p']">
-									<subfield code="i">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'r']">
-									<subfield code="u">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 's']">
-									<subfield code="q">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<!--<xsl:for-each select="marc:subfield[@code='t']"><subfield code="?"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-								<xsl:for-each select="marc:subfield[@code = 'x']">
-									<subfield code="x">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'y']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'z']">
-									<subfield code="y">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<!--<xsl:for-each select="marc:subfield[@code='?']"><subfield code="3"><xsl:value-of select="text()" /></subfield></xsl:for-each>-->
-							</datafield>
-						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '600']">
 							<datafield tag="600">
 								<xsl:attribute name="ind1">
@@ -2195,78 +2231,137 @@
 								<xsl:attribute name="ind2">
 									<xsl:value-of select="' '"/>
 								</xsl:attribute>
+								<xsl:choose>
+									<xsl:when test="@ind2 = 0">
+										<subfield code="2">
+											<xsl:value-of select="'lc'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 1">
+										<subfield code="2">
+											<xsl:value-of select="'lcch'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 2">
+										<subfield code="2">
+											<xsl:value-of select="'mesh'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 3">
+										<subfield code="2">
+											<xsl:value-of select="'nal'"/>
+										</subfield>
+									</xsl:when>
+									<!-- What to do if thesaurus source is not specified (ind2 = 4)? --> 
+									<xsl:when test="@ind2 = 5">
+										<subfield code="2">
+											<xsl:value-of select="'cae'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 6">
+										<subfield code="2">
+											<xsl:value-of select="'caf'"/>
+										</subfield>
+									</xsl:when>
+								</xsl:choose>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'n']">
 									<subfield code="h">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'p']">
 									<subfield code="i">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'f']">
 									<subfield code="k">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'k']">
 									<subfield code="l">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'l']">
 									<subfield code="m">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'g']">
 									<subfield code="n">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 's']">
 									<subfield code="q">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'r']">
 									<subfield code="r">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'n']">
 									<subfield code="s">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'o']">
 									<subfield code="t">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'r']">
 									<subfield code="u">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'x']">
 									<subfield code="x">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'y']">
+									<subfield code="z">
 										<xsl:value-of select="text()"/>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'z']">
 									<subfield code="y">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'y']">
-									<subfield code="z">
 										<xsl:value-of select="text()"/>
 									</subfield>
 								</xsl:for-each>
@@ -2285,29 +2380,72 @@
 								<xsl:attribute name="ind2">
 									<xsl:value-of select="' '"/>
 								</xsl:attribute>
+								<xsl:choose>
+									<xsl:when test="@ind2 = 0">
+										<subfield code="2">
+											<xsl:value-of select="'lc'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 1">
+										<subfield code="2">
+											<xsl:value-of select="'lcch'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 2">
+										<subfield code="2">
+											<xsl:value-of select="'mesh'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 3">
+										<subfield code="2">
+											<xsl:value-of select="'nal'"/>
+										</subfield>
+									</xsl:when>
+									<!-- What to do if thesaurus source is not specified (ind2 = 4)? --> 
+									<xsl:when test="@ind2 = 5">
+										<subfield code="2">
+											<xsl:value-of select="'cae'"/>
+										</subfield>
+									</xsl:when>
+									<xsl:when test="@ind2 = 6">
+										<subfield code="2">
+											<xsl:value-of select="'caf'"/>
+										</subfield>
+									</xsl:when>
+								</xsl:choose>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'x']">
 									<subfield code="x">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'z']">
 									<subfield code="y">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'y']">
 									<subfield code="z">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = '2']">
 									<subfield code="2">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 							</datafield>
@@ -2548,12 +2686,16 @@
 										<xsl:value-of select="substring-before(text(), ', ')"/>
 									</subfield>
 									<subfield code="b">
-										<xsl:value-of select="substring-after(text(), ', ')"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="substring-after(text(), ', ')"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'b']">
 									<subfield code="d">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'c']">
@@ -2563,7 +2705,9 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'd']">
 									<subfield code="f">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'e']">
@@ -2602,7 +2746,9 @@
 										<xsl:value-of select="substring-before(text(), ', ')"/>
 									</subfield>
 									<subfield code="b">
-										<xsl:value-of select="substring-after(text(), ', ')"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="substring-after(text(), ', ')"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'b']">
@@ -2617,7 +2763,9 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'd']">
 									<subfield code="f">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'e']">
@@ -2815,7 +2963,7 @@
 								</xsl:for-each>
 							</datafield>
 						</xsl:for-each>
-						<xsl:for-each select="marc:datafield[@tag = '100']">
+						<!--<xsl:for-each select="marc:datafield[@tag = '100']">
 							<datafield tag="720">
 								<xsl:attribute name="ind1">
 									<xsl:value-of select="' '"/>
@@ -2864,32 +3012,37 @@
 									</subfield>
 								</xsl:for-each>
 							</datafield>
-						</xsl:for-each>
+						</xsl:for-each>-->
 						<xsl:for-each select="marc:controlfield[@tag = '008']">
-							<datafield tag="802">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<subfield code="a">
-									<xsl:choose>
-										<xsl:when test="substring(text(), 21, 1) = '0'"
-											>00</xsl:when>
-										<xsl:when test="substring(text(), 21, 1) = '1'"
-											>01</xsl:when>
-										<xsl:when test="substring(text(), 21, 1) = '4'"
-											>04</xsl:when>
-										<xsl:when test="substring(text(), 21, 1) = '#'"
-											>uu</xsl:when>
-										<xsl:when test="substring(text(), 21, 1) = 'z'"
-											>zz</xsl:when>
-										<xsl:otherwise>zz</xsl:otherwise>
-									</xsl:choose>
-								</subfield>
-							</datafield>
+							<xsl:choose>
+								<xsl:when test="substring(../marc:leader, 8, 1) = 's'">
+									<datafield tag="802">
+										<xsl:attribute name="ind1">
+											<xsl:value-of select="' '"/>
+										</xsl:attribute>
+										<xsl:attribute name="ind2">
+											<xsl:value-of select="' '"/>
+										</xsl:attribute>
+										<subfield code="a">
+											<xsl:choose>
+												<xsl:when test="substring(text(), 21, 1) = '0'"
+													>00</xsl:when>
+												<xsl:when test="substring(text(), 21, 1) = '1'"
+													>01</xsl:when>
+												<xsl:when test="substring(text(), 21, 1) = '4'"
+													>04</xsl:when>
+												<xsl:when test="substring(text(), 21, 1) = '#'"
+													>uu</xsl:when>
+												<xsl:when test="substring(text(), 21, 1) = 'z'"
+													>zz</xsl:when>
+												<xsl:otherwise>zz</xsl:otherwise>
+											</xsl:choose>
+										</subfield>
+									</datafield>
+								</xsl:when>
+							</xsl:choose>
 						</xsl:for-each>
+						<xsl:call-template name="datafield856" />
 						<xsl:for-each select="marc:datafield[@tag = '590']">
 							<datafield tag="900">
 								<xsl:attribute name="ind1">
@@ -2918,13 +3071,102 @@
 		</collection>
 	</xsl:template>
 	
+	<xsl:template name="tokenizeSubfield">
+		<!--passed template parameter -->
+		<xsl:param name="list"/>
+		<xsl:param name="delimiter"/>
+		<xsl:param name="code"/>
+		<xsl:choose>
+			<xsl:when test="contains($list, $delimiter) and substring-after($list,$delimiter) != ''">
+				<subfield xmlns="http://www.loc.gov/MARC21/slim">
+					<xsl:attribute name="code">
+						<xsl:value-of select="$code" />
+					</xsl:attribute>
+					<!-- get everything in front of the first delimiter -->
+					<xsl:value-of select="substring-before($list,$delimiter)"/>
+				</subfield>
+				<xsl:call-template name="tokenizeSubfield">
+					<!-- store anything left in another variable -->
+					<xsl:with-param name="list" select="normalize-space(substring-after($list,$delimiter))"/>
+					<xsl:with-param name="delimiter" select="$delimiter"/>
+					<xsl:with-param name="code" select="$code"/>
+				</xsl:call-template>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:choose>
+					<xsl:when test="$list = ''"/>
+					<xsl:otherwise>
+						<subfield xmlns="http://www.loc.gov/MARC21/slim">
+							<xsl:attribute name="code">
+								<xsl:value-of select="$code" />
+							</xsl:attribute>
+							<xsl:call-template name="removeEndPuctuation">
+								<xsl:with-param name="text" select="$list"/>
+							</xsl:call-template>
+							
+						</subfield>
+					</xsl:otherwise>
+				</xsl:choose>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+
+	<xsl:template name="removeEndPuctuation">
+		<xsl:param name="text"/>
+		<xsl:choose>
+			<xsl:when test="string-length(translate(substring($text, string-length($text)), ' ,.:;/', '')) = 0">
+				<xsl:value-of
+					select="normalize-space(substring($text, 1, string-length($text)-1))"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:value-of
+					select="$text"/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</xsl:template>
+	
+	<xsl:template name="datafield856">
+		<xsl:for-each select="marc:datafield[@tag=856]">
+			<datafield tag="856" xmlns="http://www.loc.gov/MARC21/slim">
+				<xsl:attribute name="ind1">
+					<xsl:value-of select="@ind1"/>
+				</xsl:attribute>
+				<xsl:attribute name="ind2">
+					<xsl:value-of select="@ind2"/>
+				</xsl:attribute>
+				<xsl:for-each select="marc:subfield[@code]">
+					<subfield>
+						<xsl:attribute name="code">
+							<xsl:choose>
+								<xsl:when test="@code = 3">
+									<xsl:value-of select="2" />
+								</xsl:when>
+								<xsl:when test="@code = 2">
+									<xsl:value-of select="y" />
+								</xsl:when>
+								<xsl:when test="@code = y">
+									<xsl:value-of select="2" />
+								</xsl:when>
+								<xsl:otherwise>
+									<xsl:value-of select="@code" />
+								</xsl:otherwise>
+							</xsl:choose>
+						</xsl:attribute>
+						<xsl:value-of select="text()"/>
+					</subfield>
+				</xsl:for-each>
+			</datafield>
+		</xsl:for-each>
+
+	</xsl:template>
+
 	<xsl:template name="selects">
 		<xsl:param name="i" />
 		<xsl:param name="count" />
 		
 		<xsl:if test="$i &lt;= $count">
 			<xsl:for-each select="marc:datafield[@tag=$i]">
-			<datafield>
+			<datafield xmlns="http://www.loc.gov/MARC21/slim">
 				<xsl:attribute name="tag"><xsl:value-of select="@tag" /></xsl:attribute>
 				<xsl:attribute name="ind1">
 					<xsl:value-of select="@ind1"/>
