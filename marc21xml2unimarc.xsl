@@ -44,14 +44,6 @@
 								<xsl:variable name="controlType">
 									<xsl:value-of select="substring(text(), 9, 1)"/>
 								</xsl:variable>
-								<xsl:variable name="coding">
-									<xsl:choose>
-										<xsl:when test="substring(text(), 10, 1) = 'a'">50</xsl:when>
-										<!-- change MARC-8 encoding -->
-										<xsl:when test="substring(text(), 10, 1) = ' '">00</xsl:when>
-										<xsl:otherwise>50</xsl:otherwise>
-									</xsl:choose>
-								</xsl:variable>
 								<!-- To calculate, but how? -->
 								<xsl:variable name="baod">02200</xsl:variable>
 								<xsl:variable name="encLvl">
@@ -366,16 +358,21 @@
 											<xsl:otherwise>y</xsl:otherwise>
 										</xsl:choose>
 									</xsl:variable>
-									<!-- Demander à nicomo pour les 2 variables suivantes -->
-									<xsl:variable name="cs">
-										<xsl:value-of select="'50  '"/>
+									<xsl:variable name="coding">
+										<xsl:choose>
+											<xsl:when test="substring(../marc:leader, 10, 1) = 'a'">50  </xsl:when>
+											<!-- what if MARC-8 encoding, and not UTF8? -->
+											<xsl:otherwise>
+												<xsl:value-of select="'    '"/>
+											</xsl:otherwise>
+										</xsl:choose>
 									</xsl:variable>
 									<xsl:variable name="acs">
 										<xsl:value-of select="'    '"/>
 									</xsl:variable>
 									<xsl:variable name="aot" select="substring(text(), 34, 1)"/>
 									<xsl:value-of
-										select="concat($deof, $typeofPubDate, $d1, $d2, $targetAudience, $governmentPublication, $mrc, $loc, $tc, $cs, $acs, $aot)"
+										select="concat($deof, $typeofPubDate, $d1, $d2, $targetAudience, $governmentPublication, $mrc, $loc, $tc, $coding, $acs, $aot)"
 									/>
 								</subfield>
 							</datafield>
@@ -2944,6 +2941,44 @@
 								</xsl:when>
 							</xsl:choose>
 						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '040']">
+							<xsl:for-each select="marc:subfield[@code = 'a']">
+								<datafield tag="801" ind1=" " ind2="0">
+									<subfield code="a">
+										<xsl:call-template name="getCountryFromMarcOrgCode">
+											<xsl:with-param name="marcOrgCode" select="text()" />
+										</xsl:call-template>
+									</subfield>
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</datafield>
+							</xsl:for-each>
+							<xsl:for-each select="marc:subfield[@code = 'c']">
+								<datafield tag="801" ind1=" " ind2="1">
+									<subfield code="a">
+										<xsl:call-template name="getCountryFromMarcOrgCode">
+											<xsl:with-param name="marcOrgCode" select="text()" />
+										</xsl:call-template>
+									</subfield>
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</datafield>
+							</xsl:for-each>
+							<xsl:for-each select="marc:subfield[@code = 'd']">
+								<datafield tag="801" ind1=" " ind2="2">
+									<subfield code="a">
+										<xsl:call-template name="getCountryFromMarcOrgCode">
+											<xsl:with-param name="marcOrgCode" select="text()" />
+										</xsl:call-template>
+									</subfield>
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</datafield>
+							</xsl:for-each>
+						</xsl:for-each>
 						<xsl:for-each select="marc:controlfield[@tag = '008']">
 							<xsl:choose>
 								<xsl:when test="substring(../marc:leader, 8, 1) = 's'">
@@ -3193,9 +3228,20 @@
 				</xsl:for-each>
 			</datafield>
 		</xsl:for-each>
-
 	</xsl:template>
 
+	<xsl:template name="getCountryFromMarcOrgCode">
+		<xsl:param name="marcOrgCode" select="text()" />
+		<xsl:choose>
+			<xsl:when test="substring($marcOrgCode, 3, 1) = '-'">
+				<xsl:value-of select="substring($marcOrgCode, 1, 2)"/>
+			</xsl:when>
+			<xsl:when test="$marcOrgCode = 'DLC'">
+				<xsl:value-of select="'US'"/>
+			</xsl:when>
+		</xsl:choose>
+	</xsl:template>
+	
 	<xsl:template name="selects">
 		<xsl:param name="i" />
 		<xsl:param name="count" />
