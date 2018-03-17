@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:marc="http://www.loc.gov/MARC21/slim" version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform" exclude-result-prefixes="marc">
+<xsl:stylesheet version="1.0" exclude-result-prefixes="marc"
+	xmlns="http://www.loc.gov/MARC21/slim"
+	xmlns:marc="http://www.loc.gov/MARC21/slim"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes"/>
 	<xsl:template match="/">
-		<collection>
+		<collection xmlns="http://www.loc.gov/MARC21/slim" 
+			xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
 			<xsl:for-each select="marc:collection">
 				<xsl:for-each select="marc:record">
-					<record xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-						xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/ standards/marcxml/schema/MARC21slim.xsd"
-						xmlns="http://www.loc.gov/MARC21/slim">
+					<record type="Bibliographic" format="UNIMARC">
 						<xsl:for-each select="marc:leader">
 							<leader>
 								<!-- To calculate, but how? -->
@@ -206,6 +208,20 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'z']">
+									<subfield code="z">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+							</datafield>
+						</xsl:for-each>
+						<xsl:for-each select="marc:datafield[@tag = '035']">
+							<datafield tag="035" ind1=" " ind2=" ">
+								<xsl:for-each select="marc:subfield[@code = 'a']">
+									<subfield code="a">
 										<xsl:value-of select="text()"/>
 									</subfield>
 								</xsl:for-each>
@@ -668,7 +684,9 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'b']">
 									<subfield code="e">
-										<xsl:value-of select="text()"/>
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
 									</subfield>
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'c']">
@@ -930,13 +948,7 @@
 							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '504']">
-							<datafield tag="320">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="@ind1"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="@ind2"/>
-								</xsl:attribute>
+							<datafield tag="320" ind1=" " ind2=" ">
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
 										<xsl:value-of select="text()"/>
@@ -946,18 +958,39 @@
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '505']">
 							<datafield tag="327">
-								<!-- FIXME: Dummy indicators -->
-								<!--<xsl:attribute name="ind1"><xsl:value-of select="@ind1" /></xsl:attribute>-->
 								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
+									<xsl:value-of select="translate (@ind1, '0128', '102 ')" />
 								</xsl:attribute>
-								<!--<xsl:attribute name="ind2"><xsl:value-of select="@ind2" /></xsl:attribute>-->
 								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
+									<xsl:choose>
+										<xsl:when test="@ind2 = 0">1</xsl:when>
+										<xsl:otherwise>
+											<xsl:value-of select="' '"/>
+										</xsl:otherwise>
+									</xsl:choose>
 								</xsl:attribute>
-								<subfield code="a">bla</subfield>
 								<xsl:for-each select="marc:subfield[@code = 'a']">
 									<subfield code="a">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'r']">
+									<subfield code="b">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 't']">
+									<subfield code="c">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'g']">
+									<subfield code="p">
+										<xsl:value-of select="text()"/>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'u']">
+									<subfield code="u">
 										<xsl:value-of select="text()"/>
 									</subfield>
 								</xsl:for-each>
