@@ -10,7 +10,7 @@
 			xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd">
 			<xsl:for-each select="marc:collection">
 				<xsl:for-each select="marc:record">
-					<record type="Bibliographic" format="UNIMARC">
+					<record type="Bibliographic">
 						<xsl:for-each select="marc:leader">
 							<leader>
 								<!-- To calculate, but how? -->
