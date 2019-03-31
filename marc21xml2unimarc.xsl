@@ -219,18 +219,25 @@
 							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '035']">
-							<datafield tag="035" ind1=" " ind2=" ">
-								<xsl:for-each select="marc:subfield[@code = 'a']">
-									<subfield code="a">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-								<xsl:for-each select="marc:subfield[@code = 'z']">
-									<subfield code="z">
-										<xsl:value-of select="text()"/>
-									</subfield>
-								</xsl:for-each>
-							</datafield>
+							<xsl:if test="marc:subfield[@code = 'a' or @code = '9' or @code = 'z']">
+								<datafield tag="035" ind1=" " ind2=" ">
+									<xsl:for-each select="marc:subfield[@code = 'a']">
+										<subfield code="a">
+											<xsl:value-of select="text()"/>
+										</subfield>
+									</xsl:for-each>
+									<xsl:for-each select="marc:subfield[@code = '9']">
+										<subfield code="a">
+											<xsl:value-of select="text()"/>
+										</subfield>
+									</xsl:for-each>
+									<xsl:for-each select="marc:subfield[@code = 'z']">
+										<subfield code="z">
+											<xsl:value-of select="text()"/>
+										</subfield>
+									</xsl:for-each>
+								</datafield>
+							</xsl:if>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '030']">
 							<datafield tag="040">
@@ -2479,7 +2486,10 @@
 							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '650']">
-							<datafield tag="606" ind1=" " ind2=" ">
+							<datafield tag="606" ind2=" ">
+								<xsl:attribute name="ind1">
+									<xsl:value-of select="@ind1"/>
+								</xsl:attribute>
 								<xsl:call-template name="convertSubjectHeading">
 									<xsl:with-param name="ind" select="@ind2"/>
 								</xsl:call-template>
@@ -2492,6 +2502,13 @@
 								</xsl:for-each>
 								<xsl:for-each select="marc:subfield[@code = 'x']">
 									<subfield code="x">
+										<xsl:call-template name="removeEndPuctuation">
+											<xsl:with-param name="text" select="text()"/>
+										</xsl:call-template>
+									</subfield>
+								</xsl:for-each>
+								<xsl:for-each select="marc:subfield[@code = 'v']">
+									<subfield code="j">
 										<xsl:call-template name="removeEndPuctuation">
 											<xsl:with-param name="text" select="text()"/>
 										</xsl:call-template>
@@ -2606,19 +2623,13 @@
 							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '043']">
-							<datafield tag="660">
-								<xsl:attribute name="ind1">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:attribute name="ind2">
-									<xsl:value-of select="' '"/>
-								</xsl:attribute>
-								<xsl:for-each select="marc:subfield[@code = 'a']">
+							<xsl:for-each select="marc:subfield[@code = 'a']">
+								<datafield tag="660" ind1=" " ind2=" ">
 									<subfield code="a">
 										<xsl:value-of select="text()"/>
 									</subfield>
+								</datafield>
 								</xsl:for-each>
-							</datafield>
 						</xsl:for-each>
 						<xsl:for-each select="marc:datafield[@tag = '045']">
 							<datafield tag="661">
