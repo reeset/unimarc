@@ -102,6 +102,67 @@
       <xsl:with-param name="dstCodes">abch</xsl:with-param>
     </xsl:call-template>
 
+    <!-- 200$A->246 -->
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">200</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="srcCodes">A</xsl:with-param>
+      <xsl:with-param name="dstCodes">a</xsl:with-param>
+    </xsl:call-template>
+
+    
+    <!-- 510 ,512, 513, 514, 515, 516, 517-->
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">510</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">1</xsl:with-param>
+    </xsl:call-template>
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">512</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">4</xsl:with-param>
+    </xsl:call-template>
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">513</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">5</xsl:with-param>
+    </xsl:call-template>
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">514</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">6</xsl:with-param>
+    </xsl:call-template>
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">515</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">7</xsl:with-param>
+    </xsl:call-template>
+
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">516</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">3</xsl:with-param>
+    </xsl:call-template>
+
+
+    <xsl:call-template name="transform-datafield">
+      <xsl:with-param name="srcTag">517</xsl:with-param>
+      <xsl:with-param name="dstTag">246</xsl:with-param>
+      <xsl:with-param name="ind1"> </xsl:with-param>
+      <xsl:with-param name="ind2">3</xsl:with-param>
+    </xsl:call-template>
+
     <!-- 205->250 -->
     <xsl:call-template name="transform-datafield">
       <xsl:with-param name="srcTag">205</xsl:with-param>
@@ -128,7 +189,7 @@
 
     <!-- 225->490 -->
     <xsl:call-template name="transform-datafield">
-      <xsl:with-param name="srcTag">215</xsl:with-param>
+      <xsl:with-param name="srcTag">255</xsl:with-param>
       <xsl:with-param name="dstTag">490</xsl:with-param>
       <xsl:with-param name="srcCodes">avx</xsl:with-param>
       <xsl:with-param name="dstCodes">avx</xsl:with-param>
@@ -141,6 +202,7 @@
       <xsl:with-param name="srcCodes">ahikm</xsl:with-param>
       <xsl:with-param name="dstCodes">anpfl</xsl:with-param>
     </xsl:call-template>
+
 
     <!-- 600->600 -->
     <xsl:call-template name="transform-datafield">
@@ -199,31 +261,93 @@
     <xsl:call-template name="transform-personal-name">
       <xsl:with-param name="srcTag">700</xsl:with-param>
       <xsl:with-param name="dstTag">100</xsl:with-param>
+      <xsl:with-param name="combinecodes">ab</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+      <xsl:with-param name="dstCodes1">cdfg4</xsl:with-param>
+      <xsl:with-param name="dstCodes1_fin">cdfg4</xsl:with-param>
+    </xsl:call-template>
+
+
+    <!-- 700->100 -->
+    <xsl:call-template name="transform-personal-name">
+      <xsl:with-param name="srcTag">700</xsl:with-param>
+      <xsl:with-param name="dstTag">700</xsl:with-param>
+      <xsl:with-param name="combinecodes">AB</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+    </xsl:call-template>
+
+
+    <!-- 701->700 -->
+    <xsl:call-template name="transform-personal-name">
+      <xsl:with-param name="srcTag">701</xsl:with-param>
+      <xsl:with-param name="dstTag">700</xsl:with-param>
+      <xsl:with-param name="combinecodes">ab</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+      <xsl:with-param name="dstCodes1">cdfg4</xsl:with-param>
+      <xsl:with-param name="dstCodes1_fin">cdfg4</xsl:with-param>
     </xsl:call-template>
 
     <!-- 701->700 -->
     <xsl:call-template name="transform-personal-name">
       <xsl:with-param name="srcTag">701</xsl:with-param>
       <xsl:with-param name="dstTag">700</xsl:with-param>
+      <xsl:with-param name="combinecodes">AB</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">AB</xsl:with-param>
     </xsl:call-template>
 
     <!-- 702->700 -->
     <xsl:call-template name="transform-personal-name">
       <xsl:with-param name="srcTag">702</xsl:with-param>
       <xsl:with-param name="dstTag">700</xsl:with-param>
+      <xsl:with-param name="combinecodes">ab</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+      <xsl:with-param name="dstCodes1">cdfg4</xsl:with-param>
+      <xsl:with-param name="dstCodes1_fin">cdfg4</xsl:with-param>
+    </xsl:call-template>
+
+    <!-- 701->700 -->
+    <xsl:call-template name="transform-personal-name">
+      <xsl:with-param name="srcTag">702</xsl:with-param>
+      <xsl:with-param name="dstTag">700</xsl:with-param>
+      <xsl:with-param name="combinecodes">AB</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">AB</xsl:with-param>
     </xsl:call-template>
 
     <!-- 711->711 -->
-    <xsl:call-template name="transform-personal-name">
+    <xsl:call-template name="transform-name">
       <xsl:with-param name="srcTag">711</xsl:with-param>
       <xsl:with-param name="dstTag">711</xsl:with-param>
+      <xsl:with-param name="combinecodes">ab</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+      <xsl:with-param name="dstCodes1">defh</xsl:with-param>
+      <xsl:with-param name="dstCodes1_fin">ncde</xsl:with-param>
+    </xsl:call-template>
+
+<!-- 711->711 -->
+    <xsl:call-template name="transform-name">
+      <xsl:with-param name="srcTag">711</xsl:with-param>
+      <xsl:with-param name="dstTag">711</xsl:with-param>
+      <xsl:with-param name="combinecodes">AB</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">AB</xsl:with-param>      
     </xsl:call-template>
 
 
     <!-- 712->710 -->
-    <xsl:call-template name="transform-personal-name">
+    <xsl:call-template name="transform-name">
       <xsl:with-param name="srcTag">712</xsl:with-param>
       <xsl:with-param name="dstTag">710</xsl:with-param>
+      <xsl:with-param name="combinecodes">ab</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
+      <xsl:with-param name="dstCodes1">defh</xsl:with-param>
+      <xsl:with-param name="dstCodes1_fin">ncde</xsl:with-param>
+    </xsl:call-template>
+
+<!-- 712->710 -->
+    <xsl:call-template name="transform-name">
+      <xsl:with-param name="srcTag">712</xsl:with-param>
+      <xsl:with-param name="dstTag">710</xsl:with-param>
+      <xsl:with-param name="combinecodes">AB</xsl:with-param>
+      <xsl:with-param name="combinecodes_fin">aa</xsl:with-param>
     </xsl:call-template>
 
 	<!-- 801 -> 040 -->
@@ -325,9 +449,9 @@
     <xsl:variable name="dest33" select="substring($source,35,1)"/>
     <xsl:variable name="dest34-37" select="'    '"/>
     <xsl:variable name="dest38" select="translate(substring($source,22,1), '01', ' o')"/>
-    <xsl:variable name="dest39-40" select="'  '"/>
+    <xsl:variable name="dest39" select="' '"/>
     <controlfield tag="008">
-      <xsl:value-of select="concat($dest00-05, $dest06, $dest07-14, $dest15-21, $dest22, $dest23-27, $dest28, $dest29-32, $dest33, $dest34-37, $dest38, $dest39-40)"/>
+      <xsl:value-of select="concat($dest00-05, $dest06, $dest07-14, $dest15-21, $dest22, $dest23-27, $dest28, $dest29-32, $dest33, $dest34-37, $dest38, $dest39)"/>
     </controlfield>
   </xsl:template>
   <xsl:template name="transform-datafield">
@@ -340,7 +464,10 @@
     <xsl:if test="marc:datafield[@tag=$srcTag]/marc:subfield[contains($srcCodes, @code)]">
       <xsl:for-each select="marc:datafield[@tag=$srcTag]">
         <datafield tag="{$dstTag}">
-          <xsl:call-template name="copy-indicators"/>
+          <xsl:call-template name="copy-indicators">
+            <xsl:with-param name="ind1" select="'x'" />
+            <xsl:with-param name="ind2" select="'x'" />
+          </xsl:call-template>
           <xsl:call-template name="transform-subfields">
             <xsl:with-param name="srcCodes" select="$srcCodes"/>
             <xsl:with-param name="dstCodes" select="$dstCodes"/>
@@ -350,39 +477,124 @@
       </xsl:for-each>
     </xsl:if>
   </xsl:template>
-  <xsl:template name="transform-personal-name">
+
+
+<xsl:template name="transform-personal-name">
     <xsl:param name="srcTag"/>
     <xsl:param name="dstTag"/>
+    <xsl:param name="combinecodes"  />
+    <xsl:param name="combinecodes_fin"  />
+    <xsl:param name="dstCodes1" />
+    <xsl:param name="dstCodes1_fin"  />
+    
 
     <xsl:for-each select="marc:datafield[@tag=$srcTag]">
       <datafield tag="{$dstTag}" ind1="{@ind2}" ind2="">
+        
+
         <xsl:call-template name="transform-subfields-personal-combine">
-          <xsl:with-param name="srcCodes" select="'ab'"/>
-          <xsl:with-param name="dstCodes" select="'aa'"/>
+          <xsl:with-param name="srcCodes" select="$combinecodes"/>
+          <xsl:with-param name="dstCodes" select="$combinecodes_fin"/>
         </xsl:call-template>
 
-        <xsl:call-template name="transform-subfields">
-          <xsl:with-param name="srcCodes" select="'cdfgp4'"/>
-          <xsl:with-param name="dstCodes" select="'cbdqu4'"/>
-        </xsl:call-template>
+
+        <xsl:if test="$dstCodes1!=''">          
+          <xsl:call-template name="transform-subfields">
+            <xsl:with-param name="srcCodes" select="$dstCodes1"/>
+            <xsl:with-param name="dstCodes" select="$dstCodes1_fin"/>
+          </xsl:call-template>
+        </xsl:if>
+        
       </datafield>
     </xsl:for-each>
   </xsl:template>
-  <xsl:template name="copy-indicators">
-    <xsl:attribute name="ind1">
-      <xsl:value-of select="translate(@ind1, '#', '')"/>
-    </xsl:attribute>
-    <xsl:attribute name="ind2">
-      <xsl:value-of select="translate(@ind2, '#', '')"/>
-    </xsl:attribute>
+
+  <xsl:template name="transform-name">
+    <xsl:param name="srcTag"/>
+    <xsl:param name="dstTag"/>
+    <xsl:param name="combinecodes"  />
+    <xsl:param name="combinecodes_fin"  />
+    <xsl:param name="dstCodes1" />
+    <xsl:param name="dstCodes1_fin"  />
+    
+
+    <xsl:for-each select="marc:datafield[@tag=$srcTag]">
+      <datafield tag="{$dstTag}" ind1="{@ind2}" ind2="">
+        
+
+        <xsl:call-template name="transform-subfields-combine">
+          <xsl:with-param name="srcCodes" select="$combinecodes"/>
+          <xsl:with-param name="dstCodes" select="$combinecodes_fin"/>
+        </xsl:call-template>
+
+
+        <xsl:if test="$dstCodes1!=''">          
+          <xsl:call-template name="transform-subfields">
+            <xsl:with-param name="srcCodes" select="$dstCodes1"/>
+            <xsl:with-param name="dstCodes" select="$dstCodes1_fin"/>
+          </xsl:call-template>
+        </xsl:if>
+        
+      </datafield>
+    </xsl:for-each>
   </xsl:template>
 
-  <xsl:template name="transform-subfields-personal-combine">
+  <xsl:template name="copy-indicators">
+    <xsl:param name="ind1" />
+    <xsl:param name="ind2" />
+
+    <xsl:if test="$ind1='x'">
+      <xsl:attribute name="ind1">
+        <xsl:value-of select="translate(@ind1, '#', '')"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="$ind2='x'">
+      <xsl:attribute name="ind2">
+        <xsl:value-of select="translate(@ind2, '#', '')"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="$ind1!='x'">
+      <xsl:attribute name="ind1">
+        <xsl:value-of select="translate(@ind1, '#', '')"/>
+      </xsl:attribute>
+    </xsl:if>
+    <xsl:if test="$ind2!='x'">
+      <xsl:attribute name="ind2">
+        <xsl:value-of select="translate(@ind2, '#', '')"/>
+      </xsl:attribute>
+    </xsl:if>
+  </xsl:template>
+
+  <xsl:template name="transform-subfields-combine">
+    <xsl:param name="data_code" select ="'a'" />
     <xsl:param name="srcCodes" />
     <xsl:param name="dstCodes" />
     <xsl:param name="normalizeCodes" select="''"/>
 
-    <subfield code="{translate(@code, $srcCodes, $dstCodes)}">
+    <subfield>
+      <xsl:attribute name="code"><xsl:value-of select="$data_code" /></xsl:attribute>
+      <xsl:for-each select="marc:subfield[contains($srcCodes, @code)]">
+        <xsl:choose>
+          <xsl:when test="$normalizeCodes!=''">
+            <xsl:value-of select="translate(text(), $normalizeCodes,'')" />
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:value-of select="text()"/>
+          </xsl:otherwise>
+        </xsl:choose>
+        <xsl:if test="position()!=last()"> </xsl:if>
+      </xsl:for-each>
+    </subfield>
+  </xsl:template>
+
+  <xsl:template name="transform-subfields-personal-combine">
+    <xsl:param name="data_code" select ="'a'" />
+    <xsl:param name="srcCodes" />
+    <xsl:param name="dstCodes" />
+    <xsl:param name="normalizeCodes" select="''"/>
+
+    <subfield>
+      <xsl:attribute name="code"><xsl:value-of select="$data_code" /></xsl:attribute>
       <xsl:for-each select="marc:subfield[contains($srcCodes, @code)]">
         <xsl:choose>
           <xsl:when test="$normalizeCodes!=''">
@@ -398,11 +610,11 @@
   </xsl:template>
 
   <xsl:template name="transform-subfields">
-    <xsl:param name="srcCodes" select="$all-codes"/>
-    <xsl:param name="dstCodes" select="$srcCodes"/>
+    <xsl:param name="srcCodes"/>
+    <xsl:param name="dstCodes"/>
     <xsl:param name="normalizeCodes" select="''"/>
-
-    <xsl:for-each select="marc:subfield[contains($srcCodes, @code)]">
+    
+    <xsl:for-each select="marc:subfield[contains($srcCodes, @code)]">          
       <subfield code="{translate(@code, $srcCodes, $dstCodes)}">
         <xsl:choose>
           <xsl:when test="$normalizeCodes!=''">
@@ -416,5 +628,5 @@
     </xsl:for-each>
   </xsl:template>
 
-  <xsl:variable name="all-codes">abcdefghijklmnopqrstuvwxyz123456789</xsl:variable>
+  <xsl:variable name="all-codes">ABabcdefghijklmnopqrstuvwxyz123456789</xsl:variable>
 </xsl:stylesheet>
